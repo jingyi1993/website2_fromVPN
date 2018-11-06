@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>LibTOF API - TOF Documentation</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">TOF Documentation</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Mars Introduction</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">LibTOF API</a>
+                            </li>
+                            <li >
+                                <a href="../threedapi/">OpenGL for Mars API</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="..">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../threedapi/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#libtof-api">LibTOF API</a></li>
+            <li><a href="#libtofa-api-functions">LibTof.a API Functions</a></li>
+            <li><a href="#enums-and-structures">Enums and structures</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="libtof-api">LibTOF API</h1>
+<p><strong>Mars Main API Reference (For Windows&amp;Linux)</strong></p>
+<h2 id="libtofa-api-functions">LibTof.a API Functions</h2>
+<p>Controls device connection and shutdown. Get device depth data, raw data, and set device-specific parameters</p>
+<h3 id="1-libtof95connect">1. LibTOF_Connect</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_Connect();</p>
+<p><strong>Description</strong><br />
+ Connect and initialize the TOF camera.</p>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success <br />
+ other – error code.  </p>
+<h3 id="2-libtof95disconnect">2. LibTOF_DisConnect</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_DisConnect ();</p>
+<p><strong>Description</strong> <br />
+ Disconnect the TOF camera  </p>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="3-libtof95rcvdepthframe2">3. LibTOF_RcvDepthFrame2</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_RcvDepthFrame2(FrameData_t* frame_data, FrameDataRgb_t* frame_data_Rgb, int width, int height,IMU_data_t* IMU_data=NULL);</p>
+<p><strong>Description</strong><br />
+ Get the depth data for Mars4 or latest mars3 equipment(from 2017/05) When the camera mode(SET_CAMERA_MODE =2) is set to grayscale, frame_data_Rgb is gray data (16bits ,the valid data is 12bit)</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>frame_data [output] Depth data structure pointer</li>
+<li>frame_data_Rgb</li>
+<li>*[output] The RGB parameter of the depth point corresponds to the frame_data one by one</li>
+<li>width [input] image width</li>
+<li>height [input] image height</li>
+<li>IMU_data [output] Get IMU date</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="4-libtof95rcvvideoframe">4. LibTOF_RcvVideoFrame</h3>
+<p><strong>Routine</strong><br />
+ int LibTOF_RcvVideoFrame(short* video_data,unsigned int frame_len);</p>
+<p><strong>Description</strong><br />
+ Get the raw image(YUYV)</p>
+<p><strong>Parameters:</strong><br />
+<em> video_data [output] Video data pointer
+</em> frame_len [input] Data lens(2688*1520*2)</p>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="5-libtof95gettemperture">5. LibTOF_GetTemperture</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_GetTemperture(float* Cpu_t, float* Sensor_t);</p>
+<p><strong>Description</strong><br />
+ Get CPU and sensor temperature</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>Cpu_t [output] CPU temperature</li>
+<li>Sensor_t [output] Sensor temperature</li>
+</ul>
+<h3 id="6-libtof95pseudocolor">6. LibTOF_PseudoColor</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_PseudoColor(FrameData_t* buffer, int width, int height, unsigned char *Colorbuffer, float depth_min, float depth_max);</p>
+<p><strong>Description</strong><br />
+ Convert the depth data to pseudo color data</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li>buffer [input] Pointer to the depth data, cannot be NULL.</li>
+<li>width [input] Width of the image</li>
+<li>height [input] Height of the image</li>
+<li>Colorbuffer [output] Pointer to the data of pseudo color</li>
+<li>depth_min [input] The minimum depth</li>
+<li>depth_max [input] The maximum depth</li>
+</ul>
+<p>Return value**
+ 1</p>
+<h3 id="7-libtof95setexpoursemode">7. LibTOF_SetExpourseMode</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_SetExpourseMode(ExpourseMode_e ExpMode);</p>
+<p><strong>Description</strong><br />
+ Set TOF camera Expourse Mode.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>ExpMode [input] Manual or Auto.</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="8-libtof95setscenemode">8. LibTOF_SetSceneMode</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_SetSceneMode(SceneMode_e SceneMode);</p>
+<p><strong>Description</strong><br />
+ Set TOF camera Scene Mode.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>SceneMode [input] 30cm 75cm. See SceneMode_e </li>
+</ul>
+<p><strong>Return value</strong><br />
+LTOF_SUCCESS – success;<br />
+other – error code.  </p>
+<h3 id="9-libtof95setusecase">9. LibTOF_SetUseCase</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_SetUseCase(CameraUseCase_e UseCase);</p>
+<p><strong>Description</strong><br />
+ Set up the camera exposure frame rate pattern.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>UseCase [input] See CameraUseCase_e</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.  </p>
+<h3 id="10-libtof95setparam">10. LibTOF_Setparam</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_Setparam(CameraControlCommand_e Cmd, int value);</p>
+<p><strong>Description</strong><br />
+ Send command to TOF camera.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>Cmd [input] CamerControlCommand, See 15.3 enumeration defines.</li>
+<li>Value [input] The command parameter values.</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="11-libtof95getdeviceinfo">11. LibTOF_GetDeviceInfo</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_GetDeviceInfo(DeviceInfo_t *deviceinfo);</p>
+<p><strong>Description</strong><br />
+ Get device information.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>deviceinfo [output] Device information.</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="12-libtof95updatafalsh">12. LibTOF_UpdataFalsh</h3>
+<p><strong>Routine</strong><br />
+ int LIBTOF_CALL LibTOF_UpdataFalsh();</p>
+<p><strong>Description</strong><br />
+ Send the upgrade command.</p>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="13-libtof95rgbdenset">13. LibTOF_RgbdEnSet</h3>
+<p><strong>Routine</strong><br />
+ int LibTOF_RgbdEnSet(int RgbdEn);</p>
+<p><strong>Description</strong><br />
+Rgbd scale switch Settings</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>RgbdEn [input] 1 open rgbd; 0 close rgbd</li>
+</ul>
+<p><strong>Return value</strong><br />
+ LTOF_SUCCESS – success;<br />
+ other – error code.</p>
+<h3 id="14-libtof_setgrayexp">14. LibTOF_SetGrayExp</h3>
+<p><strong>Routine</strong><br />
+int LibTOF_SetGrayExp(int value);</p>
+<p><strong>Description</strong><br />
+Grayscale exposure time Settings.</p>
+<p><strong>Parameters:</strong>  </p>
+<ul>
+<li>value [input] Grayscale exposure</li>
+</ul>
+<p><strong>Return value</strong><br />
+LTOF_SUCCESS – success;<br />
+other – error code.  </p>
+<h2 id="enums-and-structures">Enums and structures</h2>
+<h3 id="1-framedata95t">1. FrameData_t</h3>
+<pre><code class="c">typedef struct tag_FRAMEDATA {
+    float x;
+    float y;
+    float z;
+} FrameData_t;
+
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Depth data structure</p>
+<p><strong>Members:</strong>  </p>
+<ul>
+<li>x &nbsp;&nbsp;&nbsp;&nbsp;X coordinate</li>
+<li>y &nbsp;&nbsp;&nbsp;&nbsp;Y coordinate</li>
+<li>z &nbsp;&nbsp;&nbsp;&nbsp;Z coordinate</li>
+</ul>
+<h3 id="2-framedatargb95t">2. FrameDataRgb_t</h3>
+<pre><code class="c">typedef struct tag_FRAMEDATA_RGB
+{
+    char r;
+    char g;
+    char b;
+}FrameDataRgb_t;
+
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Depth data structure</p>
+<p><strong>Members:</strong><br />
+<em> r &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R value
+</em> g &nbsp;&nbsp;&nbsp;&nbsp;G value
+* b &nbsp;&nbsp;&nbsp;&nbsp;B value</p>
+<h3 id="3-cameracontrolcommand95e">3. CameraControlCommand_e</h3>
+<pre><code class="c">typedef enum CameraControlCommand
+
+{
+     /** Set the working mode of TOF camera, 0:Mono-Frequency,1 Multi-Frequencies*/
+     SET_CAMERA_MODE = 17, /** Command: Setting the frame rate, range: 1-30 */
+     SET_CAMERA_FPS = 18,    /** Command: Set the exposure time, range: 1-2000 */
+     SET_CAMERA_EXP = 19, 
+}CameraControlCommand_e;
+
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Camera control commands for LibTOF_Setparam interface function</p>
+<h3 id="4-deviceinfo95t">4. DeviceInfo_t</h3>
+<pre><code class="c">typedef struct tag_DeviceInfo {
+     uint32_t DeviceVersion;
+     uint32_t DeviceType;
+     uint16_t DepthFrameWidth;
+     uint16_t DepthFrameHeight;
+     uint16_t BitsPerPoint;
+     uint16_t VisibleFrameWidth;
+     uint16_t VisibleFrameHeight;
+     uint16_t BitsPerPixel;
+     uint16_t BlockSizeIn;
+     uint16_t BlockSizeOut;
+     char TofAlgVersion[20];
+     char DeviceId[19];
+     uint8_t RgbdEn; 
+}DeviceInfo_t;
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Device information</p>
+<p><strong>Members:</strong>  </p>
+<ul>
+<li>DeviceVersion &nbsp;&nbsp;&nbsp;&nbsp;N/A</li>
+<li>DeviceType &nbsp;&nbsp;&nbsp;&nbsp;G value</li>
+<li>DepthFrameWidth &nbsp;&nbsp;&nbsp;&nbsp;Depth data width</li>
+<li>DepthFrameHeight &nbsp;&nbsp;&nbsp;&nbsp;Depth data height</li>
+<li>BitsPerPoint &nbsp;&nbsp;&nbsp;&nbsp;The number of bits per pixel</li>
+<li>VisibleFrameWidth &nbsp;&nbsp;&nbsp;&nbsp;VisibleFrame width</li>
+<li>VisibleFrameHeight &nbsp;&nbsp;&nbsp;&nbsp;VisibleFrame height</li>
+<li>BitsPerPixel &nbsp;&nbsp;&nbsp;&nbsp;The number of bits per pixel</li>
+<li>BlockSizeIn &nbsp;&nbsp;&nbsp;&nbsp;Input block size</li>
+<li>BlockSizeOut &nbsp;&nbsp;&nbsp;&nbsp;Output block size</li>
+<li>TofAlgVersion &nbsp;&nbsp;&nbsp;&nbsp;TOF device Information, device name, device version number</li>
+</ul>
+<h3 id="5-scenemode95e">5. SceneMode_e</h3>
+<pre><code class="c">typedef enum SceneMode
+{
+    Scene_No = 0,
+    Scene_30cm = 1,
+    Scene_75cm = 2,
+}SceneMode_e;
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Camer Scene mode  </p>
+<p><strong>Members:</strong>
+<em> Scene_No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Scene mode
+</em> Scene_30cm &nbsp;&nbsp;&nbsp;&nbsp;The camera is 30 centimeters away from the subject
+* Scene_75cm &nbsp;&nbsp;&nbsp;&nbsp;The camera is 75 centimeters away from the subject</p>
+<h3 id="6-s95metadata">6. S_MetaData;</h3>
+<pre><code class="c">typedef struct{
+    int version[3]; /*reserve byte*/
+    int cameraNum; /*camera number*/
+    int width; /*image width*/
+    int height; /*image height*/
+    int bpp; /*bpp bits per pixel*/
+    int dataFormat; /*data format*/
+    int frameCount;
+    int getFrameTime;
+    int sendFrameTime;
+    int headerLength;
+}S_MetaData;
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Frame information structure  </p>
+<p><strong>Members:</strong></p>
+<ul>
+<li>version  &nbsp;&nbsp;&nbsp;&nbsp; Firmware version</li>
+<li>cameraNum &nbsp;&nbsp;&nbsp;&nbsp;Camera channel number</li>
+<li>width &nbsp;&nbsp;&nbsp;&nbsp;image width</li>
+<li>height &nbsp;&nbsp;&nbsp;&nbsp;image height</li>
+<li>bpp &nbsp;&nbsp;&nbsp;&nbsp;Each pixel occupies a number of bytes</li>
+<li>dataFormat  &nbsp;&nbsp;&nbsp;&nbsp;The data format</li>
+<li>frameCount  &nbsp;&nbsp;&nbsp;&nbsp; Frame number</li>
+<li>getFrameTime &nbsp;&nbsp;&nbsp;&nbsp;Acquisition time stamp</li>
+<li>sendFrameTime   &nbsp;&nbsp;&nbsp;&nbsp;Send the timestamp</li>
+<li>headerLength &nbsp;&nbsp;&nbsp;&nbsp; The length of head</li>
+</ul>
+<h3 id="7-errorcode95t">7. ErrorCode_t</h3>
+<pre><code class="c">typedef enum tag_ErrorCode_TOF
+
+{
+
+    /** Success (no error) */
+    LTOF_SUCCESS = 0, 
+    /** Input/output error */
+    LTOF_ERROR_IO = -1,
+    /** Invalid parameter */ 
+    LTOF_ERROR_INVALID\_PARAM = -2, 
+    /** Access denied (insufficient permissions) */ 
+    LTOF_ERROR_ACCESS = -3,
+    /** No such device (it may have been disconnected) */
+    LTOF_ERROR_NO\_DEVICE = -4, 
+    /** Operation timed out */
+    LTOF_ERROR_TIMEOUT = -5, 
+    /** Overflow */
+    LTOF_ERROR_OVERFLOW = -6,
+    /** Insufficient memory */
+    LTOF_ERROR_NO_MEM = -7, 
+    /** Operation not supported or unimplemented on this platform */
+    LTOF_ERROR_NOT_SUPPORTED = -8, 
+    /** usb write error*/ 
+    LTOF_ERROR_USB_WRITE = -9, 
+    /**usb read error*/
+    LTOF_ERROR_USB_READ = -10, 
+    /** Other error */
+    LTOF_ERROR_OTHER = -99, 
+ }  TOF_ErrorCode_t;
+</code></pre>
+
+<p><strong>Description</strong><br />
+ Error codes</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
